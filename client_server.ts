@@ -11,6 +11,9 @@ console.log("Client Server running at http://localhost:8000");
 
 // https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/for-await...of
 for await (const request: ServerRequest of server) {
+  // TODO session cookie handling
+  // TODO routing
+  // TODO logging
   switch (request.url) {
     case "/authorize":
       handleAuthorize(request);
@@ -19,6 +22,7 @@ for await (const request: ServerRequest of server) {
       handleCallback(request);
       break;
     default:
+      // TODO rendering HTML
       request.respond({ body: "Client Server Root" });
   }
 }

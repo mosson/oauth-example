@@ -20,9 +20,19 @@ const tests: {
   fn: () => Promise<void>;
 }[] = [
   {
-    name: "認可サーバーにリダイレクトする",
+    name: "/にアクセスする時平文テキストを返却する",
     fn: async () => {
-      const response = await fetch("http://localhost:8000/", {redirect: 'manual'});
+      const response = await fetch("http://localhost:8000/");
+      assertEquals(response.status, Status.OK);
+      assertEquals(await response.text(), "Client Server Root");
+    },
+  },
+  {
+    name: "/authorizeにアクセスする時、認可サーバーにリダイレクトする",
+    fn: async () => {
+      const response = await fetch("http://localhost:8000/authorize", {
+        redirect: "manual",
+      });
       assertEquals(response.status, Status.Found);
       assertEquals(
         response.headers.get("Location"),

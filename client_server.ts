@@ -11,6 +11,19 @@ console.log("Client Server running at http://localhost:8000");
 
 // https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/for-await...of
 for await (const request: ServerRequest of server) {
+  switch (request.url) {
+    case "/authorize":
+      handleAuthorize(request);
+      break;
+    case "/callback":
+      handleCallback(request);
+      break;
+    default:
+      request.respond({ body: "Client Server Root" });
+  }
+}
+
+function handleAuthorize(request: ServerRequest): void {
   const response: Response = {
     status: Status.Found,
     // Headers はトップレベルで定義されている
@@ -18,4 +31,8 @@ for await (const request: ServerRequest of server) {
   };
 
   request.respond(response);
+}
+
+function handleCallback(request: ServerRequest): void {
+  request.respond({ body: "Handle Callback" });
 }
